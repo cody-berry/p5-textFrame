@@ -45,7 +45,6 @@ function setup() {
 
     // the center of our dialog box
     let center = new p5.Vector(pos.x + boxWidth/2, pos.y + boxHeight/2)
-    point(pos.x, center.y)
 
 
     // the height of the vertical edge
@@ -55,21 +54,31 @@ function setup() {
     let thicknessThin = 4
     let thicknessThick = 6
 
+    // our filled shape
+    fill(210, 100, 10, 20)
+    noStroke()
+    beginShape()
+    vertex(center.x, center.y)
+    vertex(center.x, pos.y)
+    vertex(pos.x+strokeMargin, pos.y)
+    vertex(pos.x, pos.y+strokeMargin)
+    vertex(pos.x, center.y)
+    endShape(CLOSE)
+
     // our thin line
+    stroke(188, 20, 98)
     strokeWeight(thicknessThin)
     line(center.x, pos.y, center.x-smallLength, pos.y)
 
     // our thick lines
     strokeWeight(thicknessThick)
+    noFill()
     beginShape()
-    vertex(center.x-smallLength, pos.y)
-    vertex(pos.x+strokeMargin, pos.y)
+    vertex(center.x-smallLength, pos.y+1)
+    vertex(pos.x+strokeMargin, pos.y+1)
     vertex(pos.x, pos.y+strokeMargin)
     vertex(pos.x, pos.y+strokeMargin+strokeHeight)
     endShape()
-
-
-    fill(210, 100, 10, 80)
 }
 
 function draw() {    
