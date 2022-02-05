@@ -1,7 +1,12 @@
 /*
 @author
-@date 2022.01.
+@date 2022.02.05
 
+coding plan
+    strokes without fill
+    make filled shape
+    reflection
+    transparent object as background
 
  */
 let font
@@ -26,6 +31,11 @@ function setup() {
     // the length for our thin line
     let smallLength = 300
 
+    // how much right the middle (from left to right) vertex or how much
+    // down the middle (from bottom to top) should go in relation to the
+    // position
+    let strokeMargin = 15
+
     // our dialog box's width and height
     let boxWidth = width - sideMargin*2
     let boxHeight = height - topMargin - bottomMargin
@@ -35,6 +45,11 @@ function setup() {
 
     // the center of our dialog box
     let center = new p5.Vector(pos.x + boxWidth/2, pos.y + boxHeight/2)
+    point(pos.x, center.y)
+
+
+    // the height of the vertical edge
+    let strokeHeight = 30
 
     // our thickness for the thin line and the thick lines
     let thicknessThin = 4
@@ -48,7 +63,9 @@ function setup() {
     strokeWeight(thicknessThick)
     beginShape()
     vertex(center.x-smallLength, pos.y)
-    vertex(pos.x+strokeMarginLeft, )
+    vertex(pos.x+strokeMargin, pos.y)
+    vertex(pos.x, pos.y+strokeMargin)
+    vertex(pos.x, pos.y+strokeMargin+strokeHeight)
     endShape()
 
 
