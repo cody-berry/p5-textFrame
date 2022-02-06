@@ -6,6 +6,15 @@ coding plan
     strokes without fill
     make filled shape
     reflection
+        make a graphics object and then scale it
+            make a function that modifies a graphics object, call that
+            function to show a corner, scale it, translate it, show it,
+            repeat 2 times
+        somehow use v.reflect(e), modifying v to be the reflection of e
+            reflect the incoming vector (v) about a normal to a line (e) in
+             2D, or
+            about a normal to a plane in 3D
+            this method acts on the vector directly.
     transparent object as background
 
  */
@@ -13,6 +22,73 @@ let font
 
 function preload() {
     font = loadFont('data/meiryo.ttf')
+}
+
+// draws a corner of our text frame
+function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
+
+    // the graphics we're going to be returning
+
+    // the length for our thin line
+    let smallLength = 300
+
+    // how much right the middle (from left to right) vertex or how much
+    // down the middle (from bottom to top) should go in relation to the
+    // position
+    let strokeMargin = 15
+
+    // our dialog box's width and height
+    let boxWidth = width - sideMargin*2
+    let boxHeight = height - topMargin - bottomMargin
+
+
+    let g = createGraphics(boxWidth/2, boxHeight/2)
+
+    // the top-left corner of our dialog box
+    let pos = new p5.Vector(0, 0)
+
+    // the center of our dialog box
+    let center = new p5.Vector(pos.x + boxWidth/2, pos.y + boxHeight/2)
+
+
+    // the height of the vertical edge
+    let strokeHeight = 30
+
+    // our thickness for the thin line and the thick lines
+    let thicknessThin = 4
+    let thicknessThick = 6
+
+    // set our color mode
+    g.colorMode(HSB, 360, 100, 100, 100)
+
+    // our filled shape
+    g.fill(210, 100, 10, 20)
+    g.noStroke()
+    g.beginShape()
+    g.vertex(center.x, center.y)
+    g.vertex(center.x, pos.y)
+    g.vertex(pos.x+strokeMargin, pos.y)
+    g.vertex(pos.x, pos.y+strokeMargin)
+    g.vertex(pos.x, center.y)
+    g.endShape(CLOSE)
+
+    // our thin line
+    g.stroke(188, 20, 98)
+    g.strokeWeight(thicknessThin)
+    g.line(center.x, pos.y, center.x-smallLength, pos.y)
+
+    // our thick lines
+    g.strokeWeight(thicknessThick)
+    g.noFill()
+    g.beginShape()
+    g.vertex(center.x-smallLength, pos.y+1)
+    g.vertex(pos.x+strokeMargin, pos.y+1)
+    g.vertex(pos.x, pos.y+strokeMargin)
+    g.vertex(pos.x, pos.y+strokeMargin+strokeHeight)
+    g.endShape()
+
+    // and finally we return this graphics.
+    return g
 }
 
 function setup() {
@@ -28,57 +104,10 @@ function setup() {
     let topMargin = 440
     let bottomMargin = 60
 
-    // the length for our thin line
-    let smallLength = 300
+    // a corner of our text frame
+    let textFrameFourth = cornerOfTextFrame(sideMargin, topMargin, bottomMargin)
 
-    // how much right the middle (from left to right) vertex or how much
-    // down the middle (from bottom to top) should go in relation to the
-    // position
-    let strokeMargin = 15
-
-    // our dialog box's width and height
-    let boxWidth = width - sideMargin*2
-    let boxHeight = height - topMargin - bottomMargin
-
-    // the top-left corner of our dialog box
-    let pos = new p5.Vector(sideMargin, topMargin)
-
-    // the center of our dialog box
-    let center = new p5.Vector(pos.x + boxWidth/2, pos.y + boxHeight/2)
-
-
-    // the height of the vertical edge
-    let strokeHeight = 30
-
-    // our thickness for the thin line and the thick lines
-    let thicknessThin = 4
-    let thicknessThick = 6
-
-    // our filled shape
-    fill(210, 100, 10, 20)
-    noStroke()
-    beginShape()
-    vertex(center.x, center.y)
-    vertex(center.x, pos.y)
-    vertex(pos.x+strokeMargin, pos.y)
-    vertex(pos.x, pos.y+strokeMargin)
-    vertex(pos.x, center.y)
-    endShape(CLOSE)
-
-    // our thin line
-    stroke(188, 20, 98)
-    strokeWeight(thicknessThin)
-    line(center.x, pos.y, center.x-smallLength, pos.y)
-
-    // our thick lines
-    strokeWeight(thicknessThick)
-    noFill()
-    beginShape()
-    vertex(center.x-smallLength, pos.y+1)
-    vertex(pos.x+strokeMargin, pos.y+1)
-    vertex(pos.x, pos.y+strokeMargin)
-    vertex(pos.x, pos.y+strokeMargin+strokeHeight)
-    endShape()
+    image(textFrameFourth, sideMargin, topMargin)
 }
 
 function draw() {    
