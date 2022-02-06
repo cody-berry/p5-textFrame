@@ -30,16 +30,16 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     // the graphics we're going to be returning
 
     // the length for our thin line
-    let smallLength = 300
+    const smallLength = 300
 
     // how much right the middle (from left to right) vertex or how much
     // down the middle (from bottom to top) should go in relation to the
     // position
-    let strokeMargin = 15
+    const strokeMargin = 10
 
     // our dialog box's width and height
-    let boxWidth = width - sideMargin*2
-    let boxHeight = height - topMargin - bottomMargin
+    const boxWidth = width - sideMargin*2
+    const boxHeight = height - topMargin - bottomMargin
 
 
     let g = createGraphics(boxWidth/2, boxHeight/2)
@@ -52,11 +52,11 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
 
 
     // the height of the vertical edge
-    let strokeHeight = 30
+    const strokeHeight = 15
 
     // our thickness for the thin line and the thick lines
-    let thicknessThin = 4
-    let thicknessThick = 6
+    const thicknessThin = 4
+    const thicknessThick = 6
 
     // set our color mode
     g.colorMode(HSB, 360, 100, 100, 100)
@@ -83,9 +83,10 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     g.beginShape()
     g.vertex(center.x-smallLength, pos.y+1)
     g.vertex(pos.x+strokeMargin, pos.y+1)
-    g.vertex(pos.x, pos.y+strokeMargin)
-    g.vertex(pos.x, pos.y+strokeMargin+strokeHeight)
+    g.vertex(pos.x, pos.y+strokeMargin+1)
+    g.vertex(pos.x, pos.y+strokeMargin+strokeHeight+1)
     g.endShape()
+    point(pos.x, pos.y)
 
     // and finally we return this graphics.
     return g
@@ -100,14 +101,29 @@ function setup() {
     noFill()
 
     // our margins, telling us where to place our box
-    let sideMargin = 90
-    let topMargin = 440
-    let bottomMargin = 60
+    const sideMargin = 90
+    const topMargin = 440
+    const bottomMargin = 60
 
     // a corner of our text frame
     let textFrameFourth = cornerOfTextFrame(sideMargin, topMargin, bottomMargin)
+    translate(sideMargin, topMargin)
+    image(textFrameFourth, 0, 0)
 
-    image(textFrameFourth, sideMargin, topMargin)
+    // another corner
+    translate(width-sideMargin*2, 0)
+    scale(-1, 1)
+    image(textFrameFourth, 0, 0)
+
+    // yet another corner
+    translate(0, height-topMargin-bottomMargin)
+    scale(1, -1)
+    image(textFrameFourth, 0, 0)
+
+    // and the final corner
+    translate(width-sideMargin*2, 0)
+    scale(-1, 1)
+    image(textFrameFourth, 0, 0)
 }
 
 function draw() {    
