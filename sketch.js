@@ -30,12 +30,12 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     // the graphics we're going to be returning
 
     // the length for our thin line
-    const smallLength = 300
+    const smallLength = 430
 
     // how much right the middle (from left to right) vertex or how much
     // down the middle (from bottom to top) should go in relation to the
     // position
-    const strokeMargin = 10
+    const strokeMargin = 7
 
     // our dialog box's width and height
     const boxWidth = width - sideMargin*2
@@ -52,17 +52,24 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
 
 
     // the height of the vertical edge
-    const strokeHeight = 15
+    const strokeHeight = 13
 
     // our thickness for the thin line and the thick lines
-    const thicknessThin = 4
-    const thicknessThick = 6
+    const thicknessThin = 6
+    const thicknessThick = 6.125
 
     // set our color mode
     g.colorMode(HSB, 360, 100, 100, 100)
 
+    // set our stroke settings (stroke ends, how to join strokes)
+    // set stroke end shapes
+    g.strokeCap(SQUARE)
+
+    // set stroke join shape
+    g.strokeJoin(MITER)
+
     // our filled shape
-    g.fill(210, 100, 10, 20)
+    g.fill(210, 100, 5, 50)
     g.noStroke()
     g.beginShape()
     g.vertex(center.x, center.y)
@@ -86,16 +93,19 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     g.vertex(pos.x, pos.y+strokeMargin+1)
     g.vertex(pos.x, pos.y+strokeMargin+strokeHeight+1)
     g.endShape()
-    point(pos.x, pos.y)
 
-    // and finally we return this graphics.
+    // and finally we return this gr aphics.
     return g
 }
 
 function setup() {
     createCanvas(1280, 720)
     colorMode(HSB, 360, 100, 100, 100)
-    background(234, 34, 24)
+    background(0, 0, 50)
+
+    noStroke()
+    fill(234, 34, 24)
+    rect(0, 0, width/2, height)
 
     stroke(188, 20, 98)
     noFill()
