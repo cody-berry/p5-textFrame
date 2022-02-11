@@ -1,8 +1,21 @@
 /*
-@author
+@author Cody
 @date 2022.02.05
 
-coding plan
+coding plan → animation
+    isolate text frame part
+    add line growing animation
+    add height growing animation, putting line growing animation into a function
+    combine line and height growing animation into one using 2 functions
+    make the line and height growing animation actually with frames
+
+
+
+    🥝 🔧 add basic expansion animation. add debug console. learned constrain,
+    image 'resize', tint for transparency, toFixed(n), canvas.get()
+
+
+coding plan → text frame generation
     strokes without fill
     make filled shape
     reflection
@@ -35,7 +48,7 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     // how much right the middle (from left to right) vertex or how much
     // down the middle (from bottom to top) should go in relation to the
     // position
-    const strokeMargin = 7
+    const strokeMargin = 13
 
     // our dialog box's width and height
     const boxWidth = width - sideMargin*2
@@ -52,11 +65,15 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
 
 
     // the height of the vertical edge
-    const strokeHeight = 13
+    const strokeHeight = 23
 
-    // our thickness for the thin line and the thick lines
+    // our thickness for the thin line, the thick lines, and the diagonal line
     const thicknessThin = 6
-    const thicknessThick = 6.125
+    const thicknessThick = 10
+
+    // diagonalThickness should be a third of the way through thicknessThin
+    // and thicknessThick.
+    const diagonalThickness = 6 + (10 - 6)/3
 
     // set our color mode
     g.colorMode(HSB, 360, 100, 100, 100)
@@ -87,19 +104,25 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     // our thick lines
     g.strokeWeight(thicknessThick)
     g.noFill()
-    g.beginShape()
-    g.vertex(center.x-smallLength, pos.y+1)
-    g.vertex(pos.x+strokeMargin, pos.y+1)
-    g.vertex(pos.x, pos.y+strokeMargin+1)
-    g.vertex(pos.x, pos.y+strokeMargin+strokeHeight+1)
-    g.endShape()
+    g.line(center.x-smallLength, pos.y+1, pos.x+strokeMargin-3, pos.y+1)
+    g.strokeWeight(diagonalThickness)
+    g.line(pos.x+strokeMargin, pos.y+1, pos.x, pos.y+strokeMargin+1)
+    g.strokeWeight(thicknessThick)
+    g.line(pos.x, pos.y+strokeMargin-3, pos.x, pos.y+strokeMargin+strokeHeight+1)
+
+    // a circle at the thickness change point
+    g.noStroke()
+    g.fill(188, 20, 98)
+    g.circle(center.x-smallLength, pos.y-1 + thicknessThin/2, 8)
+
+    console.log(center.x-smallLength, pos.y-1)
 
     // and finally we return this gr aphics.
     return g
 }
 
 function setup() {
-    createCanvas(1280, 720)
+    createCanvas(1280, 360)
     colorMode(HSB, 360, 100, 100, 100)
     background(0, 0, 50)
 
@@ -112,7 +135,7 @@ function setup() {
 
     // our margins, telling us where to place our box
     const sideMargin = 90
-    const topMargin = 440
+    const topMargin = 80
     const bottomMargin = 60
 
     // a corner of our text frame
