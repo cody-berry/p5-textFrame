@@ -4,10 +4,21 @@
 
 coding plan → animation
     isolate text frame part
+        display a green point at where the left margin and top margin is
     add line growing animation
+        map with mouseX, put percentage of textFrame.width in
+         variable, put white line with non-thick stroke weight in the center
     add height growing animation, putting line growing animation into a function
+        map with mouseX, put percentage of textFrame.height in
+         variable, add white flash with tint and alpha percentage with
+          mapping, flash formula = (frameCount-10)⁻²
     combine line and height growing animation into one using 2 functions
+        map with mouseX, determine how much time passed from short
+         line and scaled text box growing, make function's parameters
+          include the percentage and also map that and map the percentage of
+           the transition of the line growing and the height growing
     make the line and height growing animation actually with frames
+        replace mouseX with frameCount
 
 
 
