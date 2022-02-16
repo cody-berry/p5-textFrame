@@ -44,6 +44,17 @@ coding plan → text frame generation
  */
 let font
 
+// our text frame with a full canvas size of 1270, 640
+let textFrame
+
+// our margins, telling us where to place our box
+let sideMargin = 90
+let bottomMargin = 60
+let topMargin
+
+// only the text frame part
+let textFrameIsolated
+
 function preload() {
     font = loadFont('data/meiryo.ttf')
 }
@@ -126,16 +137,46 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     g.fill(188, 20, 98)
     g.circle(center.x-smallLength, pos.y-1 + thicknessThin/2, 8)
 
-    console.log(center.x-smallLength, pos.y-1)
-
     // and finally we return this gr aphics.
     return g
 }
 
 function setup() {
-    createCanvas(1280, 360)
+    createCanvas(1280, 720)
     colorMode(HSB, 360, 100, 100, 100)
     background(0, 0, 50)
+    topMargin = height - bottomMargin - 220
+
+    // create a new graphics image for our text frame
+    textFrame = createGraphics(width, height)
+
+    // a corner of our text frame
+    let textFrameFourth = cornerOfTextFrame(sideMargin, topMargin, bottomMargin)
+
+    // one corner
+    textFrame.translate(sideMargin, topMargin)
+    textFrame.image(textFrameFourth, 0, 0)
+
+    // another corner
+    textFrame.translate(width-sideMargin*2, 0)
+    textFrame.scale(-1, 1)
+    textFrame.image(textFrameFourth, 0, 0)
+
+    // yet another corner
+    textFrame.translate(0, height-topMargin-bottomMargin)
+    textFrame.scale(1, -1)
+    textFrame.image(textFrameFourth, 0, 0)
+
+    // and the final corner
+    textFrame.translate(width-sideMargin*2, 0)
+    textFrame.scale(-1, 1)
+    textFrame.image(textFrameFourth, 0, 0)
+
+    textFrameIsolated = textFrame.get(sideMargin, topMargin, height - topMargin - bottomMargin, width - 2*sideMargin)
+}
+
+function draw() {    
+    background(234, 34, 24)
 
     noStroke()
     fill(234, 34, 24)
@@ -144,33 +185,22 @@ function setup() {
     stroke(188, 20, 98)
     noFill()
 
-    // our margins, telling us where to place our box
-    const sideMargin = 90
-    const topMargin = 80
-    const bottomMargin = 60
+    // below is commented pseudocode for making our width animation
+    // scale is a number from map(mouseX, 0, width, 0, 1)
+    let scale = constrain(map(mouseX, 0, width, 0, 1), 0, 1)
 
-    // a corner of our text frame
-    let textFrameFourth = cornerOfTextFrame(sideMargin, topMargin, bottomMargin)
-    translate(sideMargin, topMargin)
-    image(textFrameFourth, 0, 0)
+    // make an integer called lineLength with a value of width - sideMargin*2
+    let lineLength = (width - sideMargin*2)*scale
 
-    // another corner
-    translate(width-sideMargin*2, 0)
-    scale(-1, 1)
-    image(textFrameFourth, 0, 0)
+    // make an integer called positionHeight = (topMargin + bottomMargin)/2
+    let positionY = (topMargin + (height-bottomMargin))/2
 
-    // yet another corner
-    translate(0, height-topMargin-bottomMargin)
-    scale(1, -1)
-    image(textFrameFourth, 0, 0)
+    // alpha is a number from map(scale, 0, 0.3, 100, 20)
+    let alpha = constrain(map(scale, 0.8, 1, 100, 5), 0, 100)
 
-    // and the final corner
-    translate(width-sideMargin*2, 0)
-    scale(-1, 1)
-    image(textFrameFourth, 0, 0)
-}
-
-function draw() {    
-    // background(234, 34, 24)
-
+    // draw a white line with an alpha of the variable alpha from position
+    // (width/2-lineHeight, positionY) to position (width/2+lineHeight,
+    // positionY)
+    stroke(188, 20, 98, alpha)
+    line(width/2-lineLength/2, positionY, width/2+lineLength/2, positionY)
 }
