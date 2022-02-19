@@ -137,7 +137,7 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     g.fill(188, 20, 98)
     g.circle(center.x-smallLength, pos.y-1 + thicknessThin/2, 8)
 
-    // and finally we return this gr aphics.
+    // and finally we return this graphics.
     return g
 }
 
@@ -187,7 +187,7 @@ function draw() {
 
     // below is commented pseudocode for making our width animation
     // scale is a number from map(mouseX, 0, width, 0, 1)
-    let scale = constrain(map(mouseX, 0, width, 0, 1), 0, 1)
+    let scale = constrain(map(mouseX, 0, width, 0, 1), 0.001, 1)
 
     // find the top
     let frameTop = textFrameIsolated.get(0, 0, textFrameIsolated.width, textFrameIsolated.height/2)
@@ -198,9 +198,13 @@ function draw() {
     // find the position height
     let positionY = (topMargin + (height-bottomMargin))/2
 
-    image(frameTop, 0, 0)
-    image(frameBottom, 0, height/2-frameBottom.height)
-    image(textFrameIsolated, 0, height-textFrameIsolated.height)
+    // find the height of the scaled text frame
+    let frameHeight = textFrameIsolated.height * scale
+
+    // display the images
+    // frame top
+    image(frameTop, sideMargin, positionY-frameHeight/2, textFrameIsolated.width, frameHeight/2)
+    image(frameBottom, sideMargin, positionY, textFrameIsolated.width, frameHeight/2)
 }
 
 
