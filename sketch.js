@@ -185,10 +185,27 @@ function draw() {
     stroke(188, 20, 98)
     noFill()
 
-    // below is commented pseudocode for making our width animation
+
     // scale is a number from map(mouseX, 0, width, 0, 1)
     let scale = constrain(map(mouseX, 0, width, 0, 1), 0.001, 1)
 
+    // if the scale is in the line growing process (less than 0.3)...
+    if (scale < 0.3) {
+        // we define the scale for our line_grower() function
+        let line_scale = map(scale, 0, 0.3, 0.001, 1)
+        line_grower(line_scale)
+    }
+    // and otherwise...
+    if (scale > 0.4) {
+        // we define the scale for our height_grower() function
+        let height_scale = map(scale, 0.3, 1, 0.001, 1)
+        height_grower(height_scale)
+    }
+
+}
+
+// given a certain scale, it displays the text frame from the scale of the frame
+function height_grower(scale) {
     // find the top
     let frameTop = textFrameIsolated.get(0, 0, textFrameIsolated.width, textFrameIsolated.height/2)
 
@@ -201,7 +218,19 @@ function draw() {
     // find the height of the scaled text frame
     let frameHeight = textFrameIsolated.height * scale
 
+
+    // fill a white-ish color to fill the frame if it is in a good range
+    if (scale > 0.5 && scale < 0.9) {
+        fill(0, 0, 100, (scale-0.7)**-4 * 0.01)
+        stroke(0, 0, 100, (scale-0.7)**-4 * 0.01)
+        rect(sideMargin, topMargin + textFrameIsolated.height * (1-scale)/2, textFrameIsolated.width, textFrameIsolated.height * scale)
+    }
+
     // display the images
+
+    // tint a white and alpha color
+    tint(0, 0, 100, scale*100)
+
     // frame top
     image(frameTop, sideMargin, positionY-frameHeight/2, textFrameIsolated.width, frameHeight/2)
     image(frameBottom, sideMargin, positionY, textFrameIsolated.width, frameHeight/2)
