@@ -187,12 +187,12 @@ function draw() {
 
 
     // scale is a number from map(mouseX, 0, width, 0, 1)
-    let scale = constrain(map(mouseX, 0, width, 0, 1), 0.001, 1)
+    let scale = constrain(map(frameCount, 0, 40, 0, 1), -1, 1)
 
     // if the scale is in the line growing process (less than 0.3)...
     if (scale < 0.3) {
         // we define the scale for our line_grower() function
-        let line_scale = map(scale, 0, 0.3, 0.001, 1)
+        let line_scale = map(scale, 0.001, 0.3, 0.001, 1)
         line_grower(line_scale)
     }
     // and otherwise...
@@ -221,9 +221,9 @@ function height_grower(scale) {
 
     // fill a white-ish color to fill the frame if it is in a good range
     if (scale > 0.5 && scale < 0.9) {
-        fill(0, 0, 100, (scale-0.7)**-4 * 0.01)
-        stroke(0, 0, 100, (scale-0.7)**-4 * 0.01)
-        rect(sideMargin, topMargin + textFrameIsolated.height * (1-scale)/2, textFrameIsolated.width, textFrameIsolated.height * scale)
+        fill(188, 2, 100, (scale-0.7)**-2)
+        stroke(0, 0, 100, (scale-0.7)**-2)
+        rect(sideMargin+5, topMargin + textFrameIsolated.height * (1-scale)/2 + 5, textFrameIsolated.width - 10, textFrameIsolated.height * scale - 10)
     }
 
     // display the images
