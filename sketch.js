@@ -201,8 +201,23 @@ function draw() {
         let height_scale = map(scale, 0.3, 1, 0.001, 1)
         height_grower(height_scale)
     }
-
 }
+
+function animate(scale) {
+    // if the scale is in the line growing process (less than 0.3)...
+    if (scale < 0.3) {
+        // we define the scale for our line_grower() function
+        let line_scale = map(scale, 0.001, 0.3, 0.001, 1)
+        line_grower(line_scale)
+    }
+    // and otherwise...
+    if (scale > 0.4) {
+        // we define the scale for our height_grower() function
+        let height_scale = map(scale, 0.3, 1, 0.001, 1)
+        height_grower(height_scale)
+    }
+}
+
 
 // given a certain scale, it displays the text frame from the scale of the frame
 function height_grower(scale) {
