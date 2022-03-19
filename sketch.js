@@ -47,6 +47,9 @@ let font
 // our text frame with a full canvas size of 1270, 640
 let textFrame
 
+// our frame class
+let frame
+
 // our margins, telling us where to place our box
 let sideMargin = 90
 let bottomMargin = 60
@@ -113,9 +116,9 @@ function cornerOfTextFrame(sideMargin, topMargin, bottomMargin) {
     g.beginShape()
     g.vertex(center.x, center.y)
     g.vertex(center.x, pos.y)
-    g.vertex(pos.x+strokeMargin, pos.y)
-    g.vertex(pos.x, pos.y+strokeMargin)
-    g.vertex(pos.x, center.y)
+    g.vertex(pos.x+4+strokeMargin, pos.y)
+    g.vertex(pos.x+4, pos.y+strokeMargin)
+    g.vertex(pos.x+4, center.y)
     g.endShape(CLOSE)
 
     // our thin line
@@ -147,6 +150,8 @@ function setup() {
     background(0, 0, 50)
     topMargin = height - bottomMargin - 220
 
+
+
     // create a new graphics image for our text frame
     textFrame = createGraphics(width, height)
 
@@ -173,6 +178,8 @@ function setup() {
     textFrame.image(textFrameFourth, 0, 0)
 
     textFrameIsolated = textFrame.get(sideMargin, topMargin, width-sideMargin*2, height-topMargin-bottomMargin)
+
+    frame = new TextFrame(textFrame, sideMargin, bottomMargin, topMargin)
 }
 
 function draw() {    
@@ -186,21 +193,22 @@ function draw() {
     noFill()
 
 
-    // scale is a number from map(mouseX, 0, width, 0, 1)
-    let scale = constrain(map(frameCount, 0, 40, 0, 1), -1, 1)
-
-    // if the scale is in the line growing process (less than 0.3)...
-    if (scale < 0.3) {
-        // we define the scale for our line_grower() function
-        let line_scale = map(scale, 0.001, 0.3, 0.001, 1)
-        line_grower(line_scale)
-    }
-    // and otherwise...
-    if (scale > 0.4) {
-        // we define the scale for our height_grower() function
-        let height_scale = map(scale, 0.3, 1, 0.001, 1)
-        height_grower(height_scale)
-    }
+    // // scale is a number from map(mouseX, 0, width, 0, 1)
+    let scale = constrain(map(mouseX, 0, width, 0, 1), -1, 1)
+    //
+    // // if the scale is in the line growing process (less than 0.3)...
+    // if (scale < 0.3) {
+    //     // we define the scale for our line_grower() function
+    //     let line_scale = map(scale, 0.001, 0.3, 0.001, 1)
+    //     line_grower(line_scale)
+    // }
+    // // and otherwise...
+    // if (scale > 0.4) {
+    //     // we define the scale for our height_grower() function
+    //     let height_scale = map(scale, 0.3, 1, 0.001, 1)
+    //     height_grower(height_scale)
+    // }
+    frame.animate(scale)
 }
 
 function animate(scale) {
